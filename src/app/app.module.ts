@@ -16,6 +16,7 @@ import { OrderComponent } from './admin/order/order.component';
 import { EmployeeComponent } from './admin/employee/employee.component';
 import { MealComponent } from './admin/meal/meal.component';
 import { CanteenSeverApiService } from './server-api/canteen-sever-api.service';
+import { FilterByDate } from './admin/order/filterByDate.pipe';
 
 
 const appRoutes: Routes = [
@@ -70,6 +71,7 @@ const appRoutes: Routes = [
     MealComponent,
     EmployeeComponent,
     OrderComponent,
+    FilterByDate
   ],
   imports: [
     RouterModule.forRoot(

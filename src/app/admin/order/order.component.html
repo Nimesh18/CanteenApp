@@ -1,3 +1,37 @@
-<p>
-  order works!
-</p>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Orders
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <label>Select Orders for:</label>
+        <select class="form-control" style="width: 20%" [(ngModel)]="selectedOption">
+          <option *ngFor="let option of Options" value={{option.id}}>{{option.name}}</option>
+        </select>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Employee ID</th>
+              <th>Employee</th>
+              <th>Meal</th>
+              <th>Meal Price</th>
+              <th>Meal Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of Orders | filterByDate: selectedOption">
+              <td>{{order.id}}</td>
+              <td>{{order.employeeID}}</td>
+              <td>{{order.employeeName}}</td>
+              <td>{{order.mealDescription}}</td>
+              <td>{{order.mealPrice}}</td>
+              <td>{{order.mealExpiryDate | date: 'medium'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

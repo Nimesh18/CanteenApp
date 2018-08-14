@@ -28,7 +28,7 @@ export class EmployeeComponent implements OnInit {
       new Employee(++this.i, 'Stacy', 0),
       new Employee(++this.i, 'Alex', 0),
       new Employee(++this.i, 'Julie', 0)
-    ]; // TODO: load the employees from the DB
+    ]; // TODO: loadEmployees() - load the employees from the DB
   }
 
   loadEmployees() {

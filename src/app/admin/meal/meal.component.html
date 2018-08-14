@@ -1,3 +1,57 @@
-<p>
-  meal works!
-</p>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Meals
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <button type="button" class="btn btn-primary" (click)="addMeal()">Add</button>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let meal of Meals">
+              <ng-template [ngTemplateOutlet]="loadTemplate(meal)" [ngTemplateOutletContext]="{ $implicit: meal, index: i }"></ng-template>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #readOnlyTemplate let-meal>
+  <td>{{meal.id}}</td>
+  <td>{{meal.description}}</td>
+  <td>{{meal.price}}</td>
+  <td>
+    <button type="button" class="btn btn-default" (click)="editMeal(meal)">Edit</button>
+  </td>
+  <td>
+    <button type="button" (click)="deleteMeal(meal)" class="btn btn-danger">Delete</button>
+</ng-template>
+
+<ng-template #editTemplate>
+  <td>
+    <input type="text" [(ngModel)]="selectedMeal.id" readonly disabled />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="selectedMeal.description" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="selectedMeal.price" />
+  </td>
+  <td>
+    <input type="button" value="Save" (click)="saveMeal()" class="btn btn-success" />
+  </td>
+  <td>
+    <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+  </td>
+</ng-template>

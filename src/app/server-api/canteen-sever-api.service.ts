@@ -21,4 +21,14 @@ export class CanteenSeverApiService {
       }, reject);
     });
   }
+
+  ScanCard(): Promise<any> {
+    // return new Promise<any>((resolve, reject) => {
+    //   const url = this.ServerApi.CreateURL('api/');
+    //   this.http.get(url).subscribe(result => {
+    //     resolve(JSON.parse(result.text()));
+    //   }, reject);
+    // });
+    return null;
+  }
 }

@@ -1,6 +1,13 @@
 .center {
+    top: 50%;
+    transform: translateY(50%);
     margin: auto;
-    width: 25%;
     padding: 10px;
     text-align: center;
+}
+
+.center-button {
+    text-align: center;
+    width: 25%; 
+    margin: 0 auto;
 }

@@ -6,8 +6,8 @@
     <div class="panel-body">
       <div class="table-responsive">
         <button type="button" class="btn btn-primary" (click)="addEmployee()">Add</button> &nbsp;
-        <input type="number" class="form-control" style="width: 20%; display: inline-block;" placeholder="Enter Credits to load" [(ngModel)]="credits"/> &nbsp;
-        <button type="button" class="btn btn-default" (click)="loadCreditsForEveryone()" [disabled]="!canLoadCredits()">Load Credits for all Employees</button>
+        <input type="number" class="form-control credit-button" placeholder="Enter Credits to load" [(ngModel)]="credits" /> &nbsp;
+        <button type="button" class="btn btn-default" (click)="loadCreditsForAll()" [disabled]="!canLoadCredits()">Load Credits for all Employees</button>
 
         <table class="table table-hover">
           <thead>
@@ -15,7 +15,6 @@
               <th>ID</th>
               <th>Name</th>
               <th>Account Balance</th>
-              <!-- <th><button type="button" (click)="loadCreditsForEveryone()">Load Credits For All Employees</button></th> -->
               <th></th>
               <th></th>
             </tr>
@@ -52,13 +51,13 @@
 
 <ng-template #editTemplate>
   <td>
-    <input type="text" [(ngModel)]="selectedEmployee.id" readonly disabled />
+    <input type="text" class="form-control" [(ngModel)]="selectedEmployee.id" readonly disabled />
   </td>
   <td>
-    <input type="text" [(ngModel)]="selectedEmployee.name" />
+    <input type="text" class="form-control" [(ngModel)]="selectedEmployee.name" />
   </td>
   <td>
-    <input type="text" [(ngModel)]="selectedEmployee.balance" />
+    <input type="text" class="form-control" [(ngModel)]="selectedEmployee.balance" />
   </td>
   <td>
     <input type="button" value="Save" (click)="saveEmployee()" class="btn btn-success" />

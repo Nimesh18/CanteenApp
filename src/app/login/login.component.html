@@ -1,18 +1,39 @@
+<ngx-loading [show]="loading"></ngx-loading>
 <div class="center">
 
-<form class="form-signin" method="POST" [formGroup]="loginForm">
-  <img class="mb-4" src="https://community.bbd.co.za/wp-content/uploads/2017/01/BBD-SoftwareDevelopment_08-.png" alt="" width="200"
-    height="72">
-  <h4>Canteen Automation System</h4>
-  <br/>
-  
-  <input type="hidden" name="session_token" value="{your session token value}">
-  <label for="username" class="sr-only">Username</label>
-  <input type="text" id="username" class="form-control" placeholder="Username" formControlName="username" autofocus>
-  <label for="password" class="sr-only">Password</label>
-  <input type="password" id="password" class="form-control" placeholder="Password" formControlName="password">
-  <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="signin('homepage')">Sign in</button>
-  <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
-</form>
+  <form class="form-signin" method="POST" [formGroup]="loginForm">
+    <img class="mb-4" src="https://community.bbd.co.za/wp-content/uploads/2017/01/BBD-SoftwareDevelopment_08-.png" alt="" width="200" height="72">
+    <h4>Canteen Automation System</h4>
+    <br/>
+    <!-- 
+    <input type="hidden" name="session_token" value="{your session token value}">
+    <label for="username" class="sr-only">Username</label>
+    <input type="text" id="username" class="form-control" placeholder="Username" formControlName="username" autofocus>
+    <label for="password" class="sr-only">Password</label>
+    <input type="password" id="password" class="form-control" placeholder="Password" formControlName="password"> -->
+    <div class="form-group center-button">
+      <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="login('homepage')">Log in</button>
+    </div>
+    <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
+  </form>
 
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{modalHeader}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{modalText}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>

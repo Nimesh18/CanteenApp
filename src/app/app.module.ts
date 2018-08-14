@@ -17,7 +17,7 @@ import { EmployeeComponent } from './admin/employee/employee.component';
 import { MealComponent } from './admin/meal/meal.component';
 import { CanteenSeverApiService } from './server-api/canteen-sever-api.service';
 import { FilterByDate } from './admin/order/filterByDate.pipe';
-
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -75,14 +75,21 @@ const appRoutes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      appRoutes
     ),
     BrowserModule,
     RouterModule,
     ReactiveFormsModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    LoadingModule.forRoot({
+      backdropBorderRadius: '14px',
+      animationType: ANIMATION_TYPES.circle,
+      primaryColour: 'rgba(255,165,0,1)',
+      secondaryColour: 'rgba(230,230,230,1)',
+      tertiaryColour: 'rgba(254,220, 23, 0)',
+      // fullScreenBackdrop: true
+    }),
   ],
   providers: [CanteenSeverApiService],
   bootstrap: [AppComponent]

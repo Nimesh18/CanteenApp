@@ -78,7 +78,7 @@ export class EmployeeComponent implements OnInit {
     return this.credits > 0;
   }
 
-  loadCreditsForEveryone() {
+  loadCreditsForAll() {
     this.Employees.forEach(emp => emp.updateBalance(this.credits));
     this.credits = null;
   }

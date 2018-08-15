@@ -28,14 +28,23 @@ export class LoginComponent implements OnInit {
 
   async login(path) {
     this.loading = true;
-    const response = await this.serverApi.ScanCard();
-    if (response) {
-      this.loading = false;
-      this.router.navigate([path]);
-    } else {
+    try {
+      const response = await this.serverApi.Login();
+      if (response) {
+        console.log(response);
+        this.loading = false;
+        this.router.navigate([path]);
+      } else {
+        this.loading = false;
+        this.modalHeader = 'Error';
+        this.modalText = 'Unable to identify tag';
+        this.show();
+      }
+    } catch (error) {
+      console.log(error);
       this.loading = false;
       this.modalHeader = 'Error';
-      this.modalText = 'Unable to identify';
+      this.modalText = 'Unable to identify tag';
       this.show();
     }
 

@@ -20,6 +20,31 @@ export class MealComponent implements OnInit {
   private i = 0; // for meal id, get this from DB
 
   constructor(private serverApi: CanteenSeverApiService) { }
+  meals;
+  async retrieveMeals() {
+    try {
+      const response = await this.serverApi.GetAllMeals();
+      if (response) {
+        console.log(response);
+        console.log(response['menu-items'][0].description);
+        console.log(response['menu-items'][1].price);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  retrieveMealsWithPromise() {
+    this.serverApi.GetAllMeals().then(data => {
+      if (data) {
+        console.log(data);
+        console.log(data['menu-items'][0].description);
+        console.log(data['menu-items'][1].description);
+      }
+    }).catch(response => {
+      console.log(response);
+    });
+  }
 
   ngOnInit() {
     this.Meals = [
@@ -27,6 +52,8 @@ export class MealComponent implements OnInit {
       new Meal(++this.i, 'Burger', 25.00),
       new Meal(++this.i, 'Potatoes', 15.00),
     ]; // TODO: loadMeals() - load the meals from the DB
+    // this.retrieveMeals();
+    this.retrieveMealsWithPromise();
   }
 
   loadMeals() {

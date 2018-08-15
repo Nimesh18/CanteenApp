@@ -3,13 +3,14 @@ import { RequestOptionsArgs, Http } from '@angular/http';
 export class ServerAPI {
     Http: Http;
     readonly Root = 'http://localhost:4200';
+    readonly ENDPOINT = 'https://5wvjx1ppia.execute-api.eu-central-1.amazonaws.com/Hackathon';
 
     constructor(http: Http) {
         this.Http = http;
     }
 
     CreateURL(path: string): string {
-        return this.Root + path;
+        return this.ENDPOINT + path;
     }
 
     Get(address: string, options?: RequestOptionsArgs): Promise<any> {

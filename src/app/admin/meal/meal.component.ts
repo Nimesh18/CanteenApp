@@ -17,53 +17,55 @@ export class MealComponent implements OnInit {
   selectedMeal: Meal;
   newRecord: boolean;
 
-  private i = 0; // for meal id, get this from DB
+
+  disableIDInput = true;
 
   constructor(private serverApi: CanteenSeverApiService) { }
-  meals;
-  async retrieveMeals() {
+  // async retrieveMeals() {
+  //   try {
+  //     const response = await this.serverApi.GetAllMeals();
+  //     if (response) {
+  //       console.log(response);
+  //       console.log(response['menu-items'][0].description);
+  //       console.log(response['menu-items'][1].price);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  // retrieveMealsWithPromise() {
+  //   this.serverApi.GetAllMeals().then(data => {
+  //     if (data) {
+  //       console.log(data);
+  //     }
+  //   }).catch(response => {
+  //     console.log(response);
+  //   });
+  // }
+
+  async ngOnInit() {
+    await this.loadMeals();
+  }
+
+  async loadMeals() {
     try {
       const response = await this.serverApi.GetAllMeals();
       if (response) {
         console.log(response);
-        console.log(response['menu-items'][0].description);
-        console.log(response['menu-items'][1].price);
+        this.Meals = response['menu-items'];
       }
     } catch (error) {
       console.log(error);
     }
-  }
-
-  retrieveMealsWithPromise() {
-    this.serverApi.GetAllMeals().then(data => {
-      if (data) {
-        console.log(data);
-        console.log(data['menu-items'][0].description);
-        console.log(data['menu-items'][1].description);
-      }
-    }).catch(response => {
-      console.log(response);
-    });
-  }
-
-  ngOnInit() {
-    this.Meals = [
-      new Meal(++this.i, 'Chicken', 20.00),
-      new Meal(++this.i, 'Burger', 25.00),
-      new Meal(++this.i, 'Potatoes', 15.00),
-    ]; // TODO: loadMeals() - load the meals from the DB
-    // this.retrieveMeals();
-    this.retrieveMealsWithPromise();
-  }
-
-  loadMeals() {
-
+    this.disableIDInput = true;
   }
 
   addMeal() {
-    this.selectedMeal = new Meal(++this.i, '', 0.00);
+    this.selectedMeal = new Meal('', 0.00);
     this.Meals.push(this.selectedMeal);
     this.newRecord = true;
+    this.disableIDInput = false;
   }
 
   editMeal(meal: Meal) {
@@ -71,29 +73,73 @@ export class MealComponent implements OnInit {
   }
 
   deleteMeal(meal: Meal) {
-    // TODO: this.serverApi.deleteMeal(meal.id);
-    this.loadMeals();
+    if (confirm('Are you sure you want to delete this record?')) {
+      try {
+        const response = this.serverApi.DeleteMeal({ 'description': meal.description });
+        console.log('delete ', response);
+      } catch (error) {
+        console.log('catch ', error);
+      }
+      this.loadMeals();
+    }
+
   }
 
-  saveMeal() {
+  async saveMeal() {
     if (this.newRecord) {
-      // TODO: this.serverApi.addMeal(this.selectedMeal);
+      try {
+        console.log('selected Meal: ', this.selectedMeal);
+        const meal_obj = {
+          'description': this.selectedMeal.description,
+          'price': this.selectedMeal.price
+        };
+        console.log(' emp_obj: ', meal_obj);
+        console.log('JSON.stringify ', JSON.stringify(this.selectedMeal));
+        const response = await this.serverApi.AddMeal(this.selectedMeal);
+        console.log('save Meal ', response);
+        this.Meals.pop();
+        if (response) {
+          console.log('response ', response);
+        }
+      } catch (error) {
+        console.log(error);
+      }
       this.loadMeals();
       this.newRecord = false;
       this.selectedMeal = null;
     } else {
-      // TODO: this.serverApi.updateMeal(this.selectedMeal);
+      try {
+        console.log('selected Meal: ', this.selectedMeal);
+        const meal_obj = {
+          'description': this.selectedMeal.description,
+          'price': this.selectedMeal.price
+        };
+        console.log(' emp_obj: ', meal_obj);
+        console.log('JSON.stringify ', JSON.stringify(meal_obj));
+        const response = await this.serverApi.AddMeal(meal_obj);
+        console.log('update Meal ', response);
+        if (response) {
+          console.log('response ', response);
+        }
+      } catch (error) {
+        console.log(error);
+      }
       this.loadMeals();
       this.selectedMeal = null;
     }
+    this.disableIDInput = true;
   }
 
   cancel() {
+    if (this.selectedMeal.description === '') {
+      this.Meals.pop();
+    }
     this.selectedMeal = null;
+    this.disableIDInput = true;
   }
 
   loadTemplate(meal: Meal) {
-    if (this.selectedMeal && this.selectedMeal.id === meal.id) {
+    if (this.selectedMeal && this.selectedMeal.description === meal.description) {
       return this.editTemplate;
     } else {
       return this.readOnlyTemplate;

@@ -9,7 +9,7 @@
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>ID</th>
+              <!-- <th>ID</th> -->
               <th>Description</th>
               <th>Price</th>
               <th></th>
@@ -28,7 +28,7 @@
 </div>
 
 <ng-template #readOnlyTemplate let-meal>
-  <td>{{meal.id}}</td>
+  <!-- <td>{{meal.id}}</td> -->
   <td>{{meal.description}}</td>
   <td>{{meal.price}}</td>
   <td>
@@ -36,14 +36,15 @@
   </td>
   <td>
     <button type="button" (click)="deleteMeal(meal)" class="btn btn-danger">Delete</button>
+  </td>
 </ng-template>
 
 <ng-template #editTemplate>
-  <td>
+  <!-- <td>
     <input type="text" class="form-control" [(ngModel)]="selectedMeal.id" readonly disabled />
-  </td>
+  </td> -->
   <td>
-    <input type="text" class="form-control" [(ngModel)]="selectedMeal.description" />
+    <input type="text" class="form-control" [(ngModel)]="selectedMeal.description" [readonly]="disableIDInput" [disabled]="disableIDInput"/>
   </td>
   <td>
     <input type="text" class="form-control" [(ngModel)]="selectedMeal.price" />

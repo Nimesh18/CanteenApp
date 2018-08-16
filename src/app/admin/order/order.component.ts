@@ -25,14 +25,23 @@ export class OrderComponent implements OnInit {
   constructor(private serverApi: CanteenSeverApiService) { }
 
   ngOnInit() {
-    this.Orders = [
-      new Order(++this.i, 1, 1, new Date(), new Date(2018, 11, 24), 'Chicken', 20.00, 'John'),
-      new Order(++this.i, 2, 3, new Date(2018, 7, 15), new Date(2018, 10, 12), 'Potatoes', 15.00, 'Julie'),
+    // this.Orders = [
+    //   new Order(++this.i, 1, 1, new Date(), new Date(2018, 11, 24), 'Chicken', 20.00, 'John'),
+    //   new Order(++this.i, 2, 3, new Date(2018, 7, 15), new Date(2018, 10, 12), 'Potatoes', 15.00, 'Julie'),
 
-    ]; // TODO: loadOrders() - load the orders from the DB
+    // ]; // TODO: loadOrders() - load the orders from the DB
+    this.loadOrders();
   }
 
-  loadOrders() {
-
+  async loadOrders() {
+    try {
+      const response = await this.serverApi.GetOrders();
+      console.log('orders ', response);
+      if (response) {
+        this.Orders = response['orders'];
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

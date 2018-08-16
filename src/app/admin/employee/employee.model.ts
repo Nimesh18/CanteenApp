@@ -1,10 +1,12 @@
 export class Employee {
     constructor(
-        public id: number,
+        public staff_id: string,
         public name: string,
-        public balance: number) { }
+        public account_balance: number,
+        public tag_number: string) { }
+
 
     updateBalance(newBalance: number) {
-        this.balance += newBalance;
+        this.account_balance += newBalance;
     }
 }

@@ -72,10 +72,22 @@ export class MealComponent implements OnInit {
     this.selectedMeal = meal;
   }
 
-  deleteMeal(meal: Meal) {
+  async deleteMeal(meal: Meal) {
     if (confirm('Are you sure you want to delete this record?')) {
       try {
-        const response = this.serverApi.DeleteMeal({ 'description': meal.description });
+        // tslint:disable-next-line:max-line-length
+        const response = await this.serverApi.DeleteMeal({
+           'TableName': 'menu-items',
+           'Key': {
+             'description': {
+               'S': '$input.path(\'$.description\')'
+              },
+            //  'price': {
+            //    'S': '$input.path(\'$.price\')'
+            //  }
+          },
+          'description': meal.description
+        });
         console.log('delete ', response);
       } catch (error) {
         console.log('catch ', error);

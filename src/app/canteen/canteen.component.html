@@ -8,7 +8,7 @@
       <div class="card">
         <ul class="list-group list-group-flush" *ngFor="let menuItem of Menu; let i = index;">
           <li class="list-group-item" style="margin-right: 30px;">
-            {{menuItem.name}} &nbsp;
+            {{menuItem.Meal.description}} &nbsp;
             <button type="button" class="btn btn-default" (click)="decrementCount(menuItem)">-</button>
             <input type="text" class="form-control" value={{menuItem.count}} style="width: 5%; display: inline-block; text-align: center;"
             />

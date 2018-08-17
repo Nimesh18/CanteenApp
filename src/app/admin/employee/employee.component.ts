@@ -66,7 +66,7 @@ export class EmployeeComponent implements OnInit {
           'tag_number': this.selectedEmployee.tag_number
         };
         console.log(' emp_obj: ', emp_obj);
-        const response = await this.serverApi.AddEmployee(this.selectedEmployee);
+        const response = await this.serverApi.AddEmployee(emp_obj);
         console.log('save Employee ', response);
         const lastEmployee = this.Employees.pop();
         if (response['result']) {

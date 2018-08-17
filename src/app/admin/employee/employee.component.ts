@@ -59,11 +59,28 @@ export class EmployeeComponent implements OnInit {
     if (this.newRecord) {
       try {
         console.log('selected Employee: ', this.selectedEmployee);
+        // const emp_obj = {
+        //   'staff_id': this.selectedEmployee.staff_id,
+        //   'name': this.selectedEmployee.name,
+        //   'account_balance': this.selectedEmployee.account_balance + '',
+        //   'tag_number': this.selectedEmployee.tag_number
+        // };
         const emp_obj = {
-          'staff_id': this.selectedEmployee.staff_id,
-          'name': this.selectedEmployee.name,
-          'account_balance': this.selectedEmployee.account_balance + '',
-          'tag_number': this.selectedEmployee.tag_number
+          'TableName': 'staff',
+          'Item': {
+            'staff_id': {
+              'S': this.selectedEmployee.staff_id
+            },
+            'name': {
+              'S': this.selectedEmployee.name
+            },
+            'account_balance': {
+              'S': this.selectedEmployee.account_balance + ''
+            },
+            'tag_number': {
+              'S': this.selectedEmployee.tag_number
+            }
+          }
         };
         console.log(' emp_obj: ', emp_obj);
         const response = await this.serverApi.AddEmployee(emp_obj);
@@ -75,17 +92,34 @@ export class EmployeeComponent implements OnInit {
       } catch (error) {
         console.log(error);
       }
-      this.loadEmployees();
+      await this.loadEmployees();
       this.newRecord = false;
       this.selectedEmployee = null;
     } else {
       try {
         console.log('selected Employee: ', this.selectedEmployee);
+        // const emp_obj = {
+        //   'staff_id': this.selectedEmployee.staff_id,
+        //   'name': this.selectedEmployee.name,
+        //   'account_balance': this.selectedEmployee.account_balance + '',
+        //   'tag_number': this.selectedEmployee.tag_number
+        // };
         const emp_obj = {
-          'staff_id': this.selectedEmployee.staff_id,
-          'name': this.selectedEmployee.name,
-          'account_balance': this.selectedEmployee.account_balance + '',
-          'tag_number': this.selectedEmployee.tag_number
+          'TableName': 'staff',
+          'Item': {
+            'staff_id': {
+              'S': this.selectedEmployee.staff_id
+            },
+            'name': {
+              'S': this.selectedEmployee.name
+            },
+            'account_balance': {
+              'S': this.selectedEmployee.account_balance + ''
+            },
+            'tag_number': {
+              'S': this.selectedEmployee.tag_number
+            }
+          }
         };
         console.log(' emp_obj: ', emp_obj);
         const response = await this.serverApi.UpdateEmployee(emp_obj);
@@ -93,7 +127,7 @@ export class EmployeeComponent implements OnInit {
       } catch (error) {
         console.log(error);
       }
-      this.loadEmployees();
+      await this.loadEmployees();
       this.selectedEmployee = null;
     }
     this.disableIDInput = true;
@@ -103,13 +137,20 @@ export class EmployeeComponent implements OnInit {
     // await this.show();
     if (confirm('Are you sure you want to delete this record?')) {
       try {
-        const response = this.serverApi.DeleteMeal({ 'staff_id': employee.staff_id });
+        const response = this.serverApi.DeleteEmployee({
+          'TableName': 'staff',
+          'Key': {
+            'staff_id': {
+              'S': employee.staff_id
+            }
+          }
+        });
         console.log('delete ', response);
       } catch (error) {
         console.log('catch ', error);
       }
       console.log('employee deleted');
-      this.loadEmployees();
+      await this.loadEmployees();
     }
   }
 
@@ -139,8 +180,23 @@ export class EmployeeComponent implements OnInit {
         const employee = new Employee(emp.staff_id, emp.name, emp.account_balance, emp.tag_number);
         employee.updateBalance(this.credits);
         emp.account_balance = employee.account_balance;
-
-        this.serverApi.LoadCredit({ 'staff_id': emp.staff_id, 'account_balance': emp.account_balance + '' }).then(response => {
+        const emp_obj = {
+        'TableName': 'staff',
+          'Item': {
+          'staff_id': {
+            'S': emp.staff_id
+          },
+          'account_balance': {
+            'S': emp.account_balance + ''
+          }
+        },
+          'Key': {
+            'staff_id': {
+              'S': emp.staff_id
+            }
+          }
+      };
+        this.serverApi.LoadCredit(emp_obj).then(response => {
           if (response) {
             console.log('Load Credits success', response);
           }

@@ -80,19 +80,19 @@ export class MealComponent implements OnInit {
            'TableName': 'menu-items',
            'Key': {
              'description': {
-               'S': '$input.path(\'$.description\')'
+               'S': meal.description
               },
             //  'price': {
             //    'S': '$input.path(\'$.price\')'
             //  }
           },
-          'description': meal.description
+          // 'description': meal.description
         });
         console.log('delete ', response);
       } catch (error) {
         console.log('catch ', error);
       }
-      this.loadMeals();
+      await this.loadMeals();
     }
 
   }
@@ -101,13 +101,24 @@ export class MealComponent implements OnInit {
     if (this.newRecord) {
       try {
         console.log('selected Meal: ', this.selectedMeal);
+        // let meal_obj = {
+        //   'description': this.selectedMeal.description,
+        //   'price': this.selectedMeal.price
+        // };
         const meal_obj = {
-          'description': this.selectedMeal.description,
-          'price': this.selectedMeal.price
+          'TableName': 'menu-items',
+          'Item': {
+            'description': {
+              'S': this.selectedMeal.description
+            },
+            'price': {
+              'S': this.selectedMeal.price + ''
+            }
+          }
         };
         console.log(' emp_obj: ', meal_obj);
         console.log('JSON.stringify ', JSON.stringify(this.selectedMeal));
-        const response = await this.serverApi.AddMeal(this.selectedMeal);
+        const response = await this.serverApi.AddMeal(meal_obj);
         console.log('save Meal ', response);
         this.Meals.pop();
         if (response) {
@@ -116,15 +127,23 @@ export class MealComponent implements OnInit {
       } catch (error) {
         console.log(error);
       }
-      this.loadMeals();
+      await this.loadMeals();
       this.newRecord = false;
       this.selectedMeal = null;
     } else {
       try {
         console.log('selected Meal: ', this.selectedMeal);
         const meal_obj = {
-          'description': this.selectedMeal.description,
-          'price': this.selectedMeal.price
+          'TableName': 'menu-items',
+          'Item': {
+            'description': {
+              'S': this.selectedMeal.description
+            },
+            'price': {
+              'S': this.selectedMeal.price + ''
+            }
+          }
+          // 'description': meal.description
         };
         console.log(' emp_obj: ', meal_obj);
         console.log('JSON.stringify ', JSON.stringify(meal_obj));
@@ -136,7 +155,7 @@ export class MealComponent implements OnInit {
       } catch (error) {
         console.log(error);
       }
-      this.loadMeals();
+      await this.loadMeals();
       this.selectedMeal = null;
     }
     this.disableIDInput = true;

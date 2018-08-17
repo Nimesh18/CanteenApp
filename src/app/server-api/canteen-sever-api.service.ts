@@ -31,7 +31,7 @@ export class CanteenSeverApiService {
     });
   }
 
-  AddMeal(meal: Meal) {
+  AddMeal(meal: any) {
     return new Promise<any>((resolve, reject) => {
       this.http.post(this.ServerApi.CreateURL('/menu-items/add'), JSON.stringify(meal)).subscribe(result => {
         resolve(JSON.parse(result.text()));
@@ -74,6 +74,14 @@ export class CanteenSeverApiService {
   UpdateEmployee(employee: any) {
     return new Promise<any>((resolve, reject) => {
       this.http.post(this.ServerApi.CreateURL('/staff/add/user'), JSON.stringify(employee)).subscribe(result => {
+        resolve(JSON.parse(result.text()));
+      }, reject);
+    });
+  }
+
+  DeleteEmployee(staff_id: any) {
+    return new Promise<any>((resolve, reject) => {
+      this.http.post(this.ServerApi.CreateURL('/staff/delete/user'), JSON.stringify(staff_id)).subscribe(result => {
         resolve(JSON.parse(result.text()));
       }, reject);
     });

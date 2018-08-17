@@ -47,7 +47,7 @@
     <input type="text" class="form-control" [(ngModel)]="selectedMeal.description" [readonly]="disableIDInput" [disabled]="disableIDInput"/>
   </td>
   <td>
-    <input type="text" class="form-control" [(ngModel)]="selectedMeal.price" />
+    <input type="number" class="form-control" [(ngModel)]="selectedMeal.price" />
   </td>
   <td>
     <input type="button" value="Save" (click)="saveMeal()" class="btn btn-success" />

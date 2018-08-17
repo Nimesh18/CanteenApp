@@ -75,7 +75,7 @@ export class EmployeeComponent implements OnInit {
               'S': this.selectedEmployee.name
             },
             'account_balance': {
-              'S': this.selectedEmployee.account_balance + ''
+              'N': this.selectedEmployee.account_balance + ''
             },
             'tag_number': {
               'S': this.selectedEmployee.tag_number
@@ -114,7 +114,7 @@ export class EmployeeComponent implements OnInit {
               'S': this.selectedEmployee.name
             },
             'account_balance': {
-              'S': this.selectedEmployee.account_balance + ''
+              'N': this.selectedEmployee.account_balance + ''
             },
             'tag_number': {
               'S': this.selectedEmployee.tag_number
@@ -182,19 +182,19 @@ export class EmployeeComponent implements OnInit {
         emp.account_balance = employee.account_balance;
         const emp_obj = {
         'TableName': 'staff',
+          'Key': {
+            'staff_id': {
+              'S': emp.staff_id
+            }
+          },
           'Item': {
           'staff_id': {
             'S': emp.staff_id
           },
           'account_balance': {
-            'S': emp.account_balance + ''
+            'N': emp.account_balance + ''
           }
-        },
-          'Key': {
-            'staff_id': {
-              'S': emp.staff_id
-            }
-          }
+        }
       };
         this.serverApi.LoadCredit(emp_obj).then(response => {
           if (response) {

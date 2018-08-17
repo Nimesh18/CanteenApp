@@ -112,7 +112,7 @@ export class MealComponent implements OnInit {
               'S': this.selectedMeal.description
             },
             'price': {
-              'S': this.selectedMeal.price + ''
+              'N': this.selectedMeal.price + ''
             }
           }
         };
@@ -140,7 +140,7 @@ export class MealComponent implements OnInit {
               'S': this.selectedMeal.description
             },
             'price': {
-              'S': this.selectedMeal.price + ''
+              'N': this.selectedMeal.price + ''
             }
           }
           // 'description': meal.description

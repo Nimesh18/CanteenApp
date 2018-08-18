@@ -3,6 +3,7 @@ import { ServerAPI } from './server-api';
 import { Http } from '@angular/http';
 import { Employee } from '../admin/employee/employee.model';
 import { Meal } from '../admin/meal/meal.model';
+import { Order } from '../admin/order/order.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -90,6 +91,14 @@ export class CanteenSeverApiService {
   GetOrders() {
     return new Promise<any>((resolve, reject) => {
       this.http.get(this.ServerApi.CreateURL('/orders')).subscribe(result => {
+        resolve(JSON.parse(result.text()));
+      }, reject);
+    });
+  }
+
+  CreateOrder(order: Order) {
+    return new Promise<any>((resolve, reject) => {
+      this.http.post(this.ServerApi.CreateURL('/orders/add'), JSON.stringify(order)).subscribe(result => {
         resolve(JSON.parse(result.text()));
       }, reject);
     });

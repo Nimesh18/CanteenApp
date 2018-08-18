@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '../../../node_modules/@angular/forms';
 import { Router, ActivatedRoute } from '../../../node_modules/@angular/router';
 import { CanteenSeverApiService } from '../server-api/canteen-sever-api.service';
+import { SessionStorageService } from '../session-storage.service';
 
 declare var $: any;
 @Component({
@@ -21,7 +22,12 @@ export class LoginComponent implements OnInit {
   modalHeader: string;
   modalText: string;
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private serverApi: CanteenSeverApiService) { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private serverApi: CanteenSeverApiService,
+    private sessionStorage: SessionStorageService) { }
 
   ngOnInit() {
   }
@@ -32,6 +38,8 @@ export class LoginComponent implements OnInit {
       const response = await this.serverApi.Login();
       if (response) {
         console.log(response);
+        this.sessionStorage.save('username', response['name']);
+        // this.sessionStorage.save('username', 'response[\'staff-name\']');
         this.loading = false;
         this.router.navigate([path]);
       } else {
@@ -47,17 +55,6 @@ export class LoginComponent implements OnInit {
       this.modalText = 'Unable to identify tag';
       this.show();
     }
-
-    // let response = await this.serverApi.Login(this.loginForm.get('username').value, this.loginForm.get('password').value);
-    // if (response == true)
-    //   this.router.navigate([path]);
-
-
-    // TODO: remove the below once the above is made to work
-    // if (this.loginForm.get('username').value === 'Nimesh' && this.loginForm.get('password').value === '1') {
-    //   this.router.navigate([path]);
-    // }
-
   }
 
   show() {

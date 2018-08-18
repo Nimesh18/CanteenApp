@@ -1,4 +1,5 @@
 <app-header></app-header>
+<app-modal modalHeader='Success' modalText='Order successfully created!'></app-modal>
 <div class="container">
   <div class="panel panel-default" style="width: 100%;">
     <div class="panel-heading">
@@ -7,17 +8,18 @@
     <div class="panel-body">
       <div class="card">
         <ul class="list-group list-group-flush" *ngFor="let menuItem of Menu; let i = index;">
-          <li class="list-group-item" style="margin-right: 30px;">
-            {{menuItem.Meal.description}} &nbsp;
+          <li class="list-group-item">
+            <div style="display: inline-block; width: 10%;">{{menuItem.description}} &nbsp;</div>
+            <div style="display: inline-block; width: 15%;">
             <button type="button" class="btn btn-default" (click)="decrementCount(menuItem)">-</button>
-            <input type="text" class="form-control" value={{menuItem.count}} style="width: 5%; display: inline-block; text-align: center;"
-            />
+            <input type="text" class="form-control" value={{menuItem.quantity}} style="width: 40%; display: inline-block; text-align: center;" readonly/>
             <button type="button" class="btn btn-default" (click)="incrementCount(menuItem)">+</button>
+            </div>
           </li>
         </ul>
       </div>
 
     </div>
-    <button class="btn btn-primary btn-lg btn-block" [disabled]="disableFinish()" (click)="finish()">Checkout</button>
+    <button class="btn btn-primary btn-lg btn-block" [disabled]="disableFinish()" (click)="CreateOrder()">Checkout</button>
   </div>
 </div>

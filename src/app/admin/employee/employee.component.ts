@@ -59,28 +59,11 @@ export class EmployeeComponent implements OnInit {
     if (this.newRecord) {
       try {
         console.log('selected Employee: ', this.selectedEmployee);
-        // const emp_obj = {
-        //   'staff_id': this.selectedEmployee.staff_id,
-        //   'name': this.selectedEmployee.name,
-        //   'account_balance': this.selectedEmployee.account_balance + '',
-        //   'tag_number': this.selectedEmployee.tag_number
-        // };
         const emp_obj = {
-          'TableName': 'staff',
-          'Item': {
-            'staff_id': {
-              'S': this.selectedEmployee.staff_id
-            },
-            'name': {
-              'S': this.selectedEmployee.name
-            },
-            'account_balance': {
-              'N': this.selectedEmployee.account_balance + ''
-            },
-            'tag_number': {
-              'S': this.selectedEmployee.tag_number
-            }
-          }
+          'staff_id': this.selectedEmployee.staff_id,
+          'name': this.selectedEmployee.name,
+          'account_balance': this.selectedEmployee.account_balance + '',
+          'tag_number': this.selectedEmployee.tag_number
         };
         console.log(' emp_obj: ', emp_obj);
         const response = await this.serverApi.AddEmployee(emp_obj);
@@ -113,11 +96,11 @@ export class EmployeeComponent implements OnInit {
             'name': {
               'S': this.selectedEmployee.name
             },
-            'account_balance': {
-              'N': this.selectedEmployee.account_balance + ''
-            },
             'tag_number': {
               'S': this.selectedEmployee.tag_number
+            },
+            'account_balance': {
+              'N': this.selectedEmployee.account_balance + ''
             }
           }
         };
@@ -134,7 +117,6 @@ export class EmployeeComponent implements OnInit {
   }
 
   async deleteEmployee(employee: Employee) {
-    // await this.show();
     if (confirm('Are you sure you want to delete this record?')) {
       try {
         const response = this.serverApi.DeleteEmployee({
@@ -187,14 +169,12 @@ export class EmployeeComponent implements OnInit {
               'S': emp.staff_id
             }
           },
-          'Item': {
-          'staff_id': {
-            'S': emp.staff_id
-          },
-          'account_balance': {
-            'N': emp.account_balance + ''
+          'UpdateExpression': 'set account_balance = :account_balance',
+          'ExpressionAttributeValues': {
+            ':account_balance': {
+              'N': emp.account_balance + ''
+            }
           }
-        }
       };
         this.serverApi.LoadCredit(emp_obj).then(response => {
           if (response) {

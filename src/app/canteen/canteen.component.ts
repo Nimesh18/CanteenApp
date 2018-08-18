@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CanteenSeverApiService } from '../server-api/canteen-sever-api.service';
-import { Meal } from '../admin/meal/meal.model';
+import { MenuOption } from './menu-option.model';
+import { Order } from '../admin/order/order.model';
+import { Employee } from '../admin/employee/employee.model';
+import { SessionStorageService } from '../session-storage.service';
 
+declare var $: any;
 @Component({
   selector: 'app-canteen',
   templateUrl: './canteen.component.html',
@@ -9,91 +13,86 @@ import { Meal } from '../admin/meal/meal.model';
 })
 export class CanteenComponent implements OnInit {
 
-  Meals: Array<Meal>;
-  Menu: Array<{ count, Meal }>;
-  /*[
-     { id: 1, name: 'Chicken', count: 0 },
-     { id: 2, name: 'Burger', count: 0 },
-     { id: 3, name: 'Potatoes', count: 0 },
-   ];*/
+  Menu: Array<MenuOption>;
 
   options = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  constructor(private serverApi: CanteenSeverApiService) { }
+  constructor(private serverApi: CanteenSeverApiService, private sessionStorage: SessionStorageService) { }
 
   retrieveMealsWithPromise() {
     this.serverApi.GetAllMeals().then(data => {
       if (data) {
-        let i = 0;
-        data['menu-items'].forEach(element => {
-          const test = new Meal(element.description, element.price);
-          this.Meals.push(test);
-          i = i + 1;
-          console.log('test' + i + ': ' + Date.now());
-        });
+        // let i = 0;
+        // data['menu-items'].forEach(element => {
+        //   const test = new Meal(element.description, element.price);
+        //   this.Meals.push(test);
+        //   i = i + 1;
+        //   console.log('test' + i + ': ' + Date.now());
+        // });
+        this.Menu = data['menu-items'];
         // console.log(this.Meals);
       }
     }).catch(response => {
       console.log(response);
     });
-    console.log(this.Meals);
   }
 
   async retrieveMeals() {
     try {
       const response = await this.serverApi.GetAllMeals();
       if (response) {
-        /*console.log(response);
-        console.log(response['menu-items'][0].description);
-        console.log(response['menu-items'][1].price);*/
-        let i = 0;
-        response['menu-items'].forEach(element => {
-          const test = new Meal(element.description, element.price);
-          this.Meals.push(test);
-          i = i + 1;
-          // console.log("await"+i+": "+Date.now());
+        this.Menu = new Array<MenuOption>();
+        response['menu-items'].forEach(menuOption => {
+          this.Menu.push(new MenuOption(menuOption.description, menuOption.price));
         });
+        console.log('Menu: ', this.Menu);
       }
     } catch (error) {
       console.log(error);
     }
-    return 1;
   }
 
   async ngOnInit() {
-    this.Meals = new Array<Meal>();
-    this.Menu = new Array<{ count, Meal }>();
-    const i = await this.retrieveMeals();
-    // console.log(this.Meals.length);
-    this.Meals.forEach(element => {
-      const test = { count: 0, Meal: element };
-      this.Menu.push(test);
-      // console.log("  wadwa  wad");
-    });
-    /*while(this.Meals.length == 0)
-    {
-      //console.log(this.Meals)
-    }*/
-    // console.log(this.Meals.length);
-    //// console.log(Date.now());
+    await this.retrieveMeals();
   }
 
-  incrementCount(menuItem) {
-    if (this.Menu.find(menu => menu.Meal.id === menuItem.id) && this.Menu.find(menu => menu.Meal.id === menuItem.id).count < 10) {
-      this.Menu.find(menu => menu.Meal.id === menuItem.id).count++;
+  incrementCount(menuItem: MenuOption) {
+    if (menuItem && menuItem.quantity < 10) {
+      menuItem.quantity++;
     }
   }
 
-  decrementCount(menuItem) {
-    if (this.Menu.find(menu => menu.Meal.id === menuItem.id) && this.Menu.find(menu => menu.Meal.id === menuItem.id).count > 0) {
-      this.Menu.find(menu => menu.Meal.id === menuItem.id).count--;
+  decrementCount(menuItem: MenuOption) {
+    if (menuItem && menuItem.quantity > 0) {
+      menuItem.quantity--;
     }
   }
 
   disableFinish() {
-    return; // this.Menu.every(menuItem => menuItem.count === 0);
+    return this.Menu ? this.Menu.every(menuItem => menuItem.quantity === 0) : false;
   }
 
-  finish() {
-    return true;
+  async CreateOrder() {
+    console.log('Menu ', this.Menu);
+      this.Menu.forEach(menuOption => {
+        const order = new Order(new Date(), menuOption.description, this.sessionStorage.get('username'));
+        console.log('created order: ', order);
+        this.serverApi.CreateOrder(order.FormatWithMappings()).then(response => {
+          if (response) {
+            console.log('Create order ', response);
+          }
+        }).catch(error => {
+          console.log(error);
+        });
+      });
+      this.show();
+      this.retrieveMeals();
+  }
+
+  show() {
+    $('#myModal').modal('show');
+  }
+
+  hide() {
+    $('#myModal').modal('hide');
   }
 }

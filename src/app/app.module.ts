@@ -18,6 +18,9 @@ import { MealComponent } from './admin/meal/meal.component';
 import { CanteenSeverApiService } from './server-api/canteen-sever-api.service';
 import { FilterByDate } from './admin/order/filterByDate.pipe';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
+import { ModalComponent } from './components/modal/modal.component';
+import { StorageServiceModule, WebStorageService } from 'angular-webstorage-service';
+import { SessionStorageService } from './session-storage.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -71,7 +74,8 @@ const appRoutes: Routes = [
     MealComponent,
     EmployeeComponent,
     OrderComponent,
-    FilterByDate
+    FilterByDate,
+    ModalComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -90,8 +94,9 @@ const appRoutes: Routes = [
       tertiaryColour: 'rgba(254,220, 23, 0)',
       // fullScreenBackdrop: true
     }),
+    StorageServiceModule
   ],
-  providers: [CanteenSeverApiService],
+  providers: [CanteenSeverApiService, SessionStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -82,7 +82,7 @@ export class CanteenSeverApiService {
 
   DeleteEmployee(staff_id: any) {
     return new Promise<any>((resolve, reject) => {
-      this.http.post(this.ServerApi.CreateURL('/staff/delete/user'), JSON.stringify(staff_id)).subscribe(result => {
+      this.http.post(this.ServerApi.CreateURL('/staff/delete/'), JSON.stringify(staff_id)).subscribe(result => {
         resolve(JSON.parse(result.text()));
       }, reject);
     });

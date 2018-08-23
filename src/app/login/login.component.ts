@@ -38,8 +38,8 @@ export class LoginComponent implements OnInit {
       const response = await this.serverApi.Login();
       if (response) {
         console.log(response);
-        this.sessionStorage.save('username', response['name']);
-        // this.sessionStorage.save('username', 'response[\'staff-name\']');
+        // this.sessionStorage.save('username', response['name']);
+        this.sessionStorage.save('username', 'Manuel');
         this.loading = false;
         this.router.navigate([path]);
       } else {
